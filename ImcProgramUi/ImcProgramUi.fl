@@ -1,0 +1,210 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0303 
+header_name {.h} 
+code_name {.cxx}
+decl {\#include <FL/fl_ask.H>} {selected public global
+} 
+
+decl {enum menunames {MANAGE, SAVE, QUIT, HELP}} {
+  comment {added in header only, because of redefiniion issues} public global
+} 
+
+decl {enum databasecontrols {OPEN_TABLE, CREATE_TABLE, DELETE_TABLE, SAVE_DATA, DELETE_DATA, OK1, OK2}} {
+  comment {added in header only, because of redefiniion issues} public global
+} 
+
+class MainWindow {open
+} {
+  decl {Fl_Text_Buffer *buff;} {
+    comment {Declaring text buffer in global scope, 
+static in source file only, dont know why, 
+but just work like this.} public local
+  }
+  Function {hide()} {open
+  } {
+    code {mainwindow->hide();} {}
+  }
+  Function {show()} {open
+  } {
+    code {mainwindow->show();} {}
+  }
+  Function {make()} {open
+  } {
+    Fl_Window mainwindow {
+      label {Imc Program}
+      callback WinQuit_cb open
+      tooltip {Program for you to check your body Imc.} xywh {11 35 755 550} type Double box UP_BOX labelsize 150 align 9 hide resizable
+    } {
+      Fl_Input Name {
+        label {Name:}
+        xywh {230 136 130 24}
+      }
+      Fl_Value_Input Weight {
+        label {Weight:}
+        xywh {120 202 125 28}
+      }
+      Fl_Value_Input Height {
+        label {Height:}
+        xywh {325 202 120 28}
+      }
+      Fl_Text_Display Display {
+        xywh {45 270 580 145}
+        code0 {buff = new Fl_Text_Buffer;}
+        code1 {Display->buffer(buff);}
+      }
+      Fl_Return_Button Enter {
+        label Next
+        user_data {"next"}
+        callback Button_cb
+        xywh {580 484 145 55} selection_color 36 labeltype SHADOW_LABEL labelsize 30
+      }
+      Fl_Menu_Bar {} {open
+        xywh {0 0 752 21} down_box DOWN_BOX selection_color 180
+      } {
+        Submenu {} {
+          label FILE open
+          xywh {0 0 62 20} labelcolor 57
+        } {
+          MenuItem {} {
+            label {MANAGE USERS TABLE}
+            user_data MANAGE user_data_type {menunames*}
+            callback Menu_cb
+            tooltip {Manage users personal information} xywh {0 0 30 20}
+          }
+          MenuItem {} {
+            label {SAVE DATA}
+            user_data SAVE user_data_type {menunames*}
+            callback Menu_cb
+            tooltip {Save personal information on table} xywh {20 20 30 20}
+          }
+          MenuItem {} {
+            label QUIT
+            user_data QUIT user_data_type {menunames*}
+            callback Menu_cb
+            tooltip {Load personal information from database} xywh {10 10 30 20}
+          }
+        }
+        MenuItem {} {
+          label HELP
+          user_data HELP user_data_type {menunames*}
+          callback Menu_cb
+          xywh {0 0 30 20}
+        }
+      }
+    }
+    code {mainwindow->show();} {}
+  }
+} 
+
+class WindowTables {open
+} {
+  decl {Fl_Text_Buffer *buff;} {public local
+  }
+  Function {hide()} {open
+  } {
+    code {tableswindow->hide();} {}
+  }
+  Function {show()} {open
+  } {
+    code {tableswindow->show();} {}
+  }
+  Function {label(const char* label)} {open
+  } {
+    code {tableswindow->label(label);} {}
+  }
+  Function {make()} {open
+  } {
+    Fl_Window tableswindow {open
+      xywh {210 77 755 410} type Double hide
+    } {
+      Fl_Button CreateTable {
+        label {CREATE NEW TABLE}
+        user_data CREATE_TABLE user_data_type {databasecontrols*}
+        callback Buttons_cb
+        xywh {35 290 150 30}
+      }
+      Fl_Button DeleteTable {
+        label {DELETE TABLE}
+        user_data DELETE_TABLE user_data_type {databasecontrols*}
+        callback Buttons_cb
+        xywh {35 345 150 30}
+      }
+      Fl_Button OpenTable {
+        label {OPEN TABLE}
+        user_data OPEN_TABLE user_data_type {databasecontrols*}
+        callback Buttons_cb
+        xywh {35 235 150 30}
+      }
+      Fl_Return_Button Ok {
+        label OK
+        user_data OK1 user_data_type {databasecontrols*}
+        callback Ok_cb
+        xywh {565 275 150 50}
+      }
+      Fl_Value_Input Number {
+        xywh {295 280 185 25} hide
+      }
+      Fl_Input Text {
+        xywh {280 261 185 24}
+      }
+      Fl_Text_Display Display {
+        xywh {35 15 695 205}
+        code0 {buff = new Fl_Text_Buffer;}
+        code1 {Display->buffer(buff);}
+      }
+    }
+    code {tableswindow->show();} {}
+  }
+} 
+
+class WindowData {open
+} {
+  decl {Fl_Text_Buffer *buff;} {public local
+  }
+  Function {hide()} {open
+  } {
+    code {datawindow->hide();} {}
+  }
+  Function {show()} {open
+  } {
+    code {datawindow->show();} {}
+  }
+  Function {label(const char* label)} {open
+  } {
+    code {datawindow->label(label);} {}
+  }
+  Function {make()} {open
+  } {
+    Fl_Window datawindow {open
+      xywh {220 87 755 410} type Double hide
+    } {
+      Fl_Button SaveData {
+        label {SAVE DATA}
+        user_data SAVE_DATA user_data_type {databasecontrols*}
+        callback Buttons_cb
+        xywh {35 265 150 30}
+      }
+      Fl_Button DeleteData {
+        label {DELETE DATA}
+        user_data DELETE_DATA user_data_type {databasecontrols*}
+        callback Buttons_cb
+        xywh {35 320 150 30}
+      }
+      Fl_Return_Button Ok {
+        label OK
+        user_data OK2 user_data_type {databasecontrols*}
+        callback Ok_cb
+        xywh {565 275 150 50}
+      }
+      Fl_Value_Input Number {
+        xywh {295 305 185 25}
+      }
+      Fl_Text_Display Display {
+        xywh {35 15 695 205}
+        code0 {buff = new Fl_Text_Buffer;}
+        code1 {Display->buffer(buff);}
+      }
+    }
+    code {datawindow->show();} {}
+  }
+} 
